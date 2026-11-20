@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "unstableterrain",
+  "provides": [
+    "greatsea"
+  ],
+  "version": "${version}",
+  "name": "Unstable Terrain",
+  "description": "The Unstable world type: Mist, Great Sea, Amplified, Underworld, and seventeen ordered Farlands terrain stages with separate coordinates and ender chests.",
+  "authors": [
+    "BxltRust"
+  ],
+  "license": "MIT",
+  "environment": "*",
+  "accessWidener": "greatsea.accesswidener",
+  "entrypoints": {
+    "main": [
+      "dev.greatsea.GreatSea"
+    ],
+    "client": [
+      "dev.greatsea.FarlandsClient"
+    ]
+  },
+  "mixins": [
+    "greatsea.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.18.4",
+    "minecraft": "1.21.11",
+    "java": ">=21",
+    "fabric-api": ">=0.141.4"
+  }
+}

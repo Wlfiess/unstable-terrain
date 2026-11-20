@@ -1,0 +1,8 @@
+name: UnstableTerrain
+version: '1.0'
+main: dev.greatsea.PaperPlugin
+bootstrapper: dev.greatsea.PaperBootstrap
+api-version: '1.21.11'
+load: STARTUP
+description: Standalone Paper edition of Unstable Terrain 1.0
+authors: [BxltRust]

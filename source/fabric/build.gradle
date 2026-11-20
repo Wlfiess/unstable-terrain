@@ -1,0 +1,109 @@
+plugins { id 'net.fabricmc.fabric-loom-remap' version '1.17.21' }
+version = '1.0'
+group = 'dev.greatsea'
+base { archivesName = 'unstableterrain' }
+repositories { mavenCentral() }
+dependencies {
+    minecraft 'com.mojang:minecraft:1.21.11'
+    mappings 'net.fabricmc:yarn:1.21.11+build.6:v2'
+    modImplementation 'net.fabricmc:fabric-loader:0.18.4'
+    modImplementation 'net.fabricmc.fabric-api:fabric-api:0.141.4+1.21.11'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+java { toolchain { languageVersion = JavaLanguageVersion.of(21) }; withSourcesJar() }
+tasks.withType(JavaCompile).configureEach { options.release = 21 }
+processResources {
+    inputs.property 'version', project.version
+    filesMatching('fabric.mod.json') { expand version: project.version }
+}
+test { useJUnitPlatform() }
+loom {
+    accessWidenerPath = file('src/main/resources/greatsea.accesswidener')
+    runs {
+        server {
+            runDir (providers.gradleProperty('revision1430Capture').isPresent()?'../../work/test-server-1430':providers.gradleProperty('revision1410Capture').isPresent()?'../../work/test-server-1410':providers.gradleProperty('revision1400Capture').isPresent()?'../../work/test-server-1400':providers.gradleProperty('revision1390Final').isPresent()?'../../work/test-server-1390-final':providers.gradleProperty('revision1390Capture').isPresent()?'../../work/test-server-1390-candidate':providers.gradleProperty('revision1384Capture').isPresent()?'../../work/test-server-1384':providers.gradleProperty('revision1382Final').isPresent()?'../../work/test-server-1382-final':providers.gradleProperty('revision1382Capture').isPresent()?'../../work/test-server-1382':providers.gradleProperty('revision1381Capture').isPresent()?'../../work/test-server-1381':providers.gradleProperty('sampleFinalCapture').isPresent()?'../../work/test-server-final1380':'../../work/test-server')
+            if(providers.gradleProperty('spokelandsCaptureServer').isPresent()){vmArg '-Xmx4G';vmArg '-Xss16M'}
+            if(providers.gradleProperty('revision1381Capture').isPresent())vmArg '-Dunstableterrain.verify1381=true'
+            if (providers.gradleProperty('spokelandsVerify').isPresent()) {vmArg '-Dunstableterrain.verifySpokelands=true';vmArg '-Xmx6G';vmArg '-Xss16M';if(providers.gradleProperty('spokelandsPreview').isPresent())vmArg '-Dunstableterrain.spokelandsPreview=true'}
+            if (providers.gradleProperty('skygridAudit').isPresent()) {vmArg '-Dunstableterrain.fullTerrainAudit=true';vmArg '-Dunstableterrain.previewOnly=true';vmArg '-Dunstableterrain.previewStage=SKYGRID,WATER,DECAY'}
+            if (providers.gradleProperty('fullTerrainAudit').isPresent()) {vmArg '-Dunstableterrain.fullTerrainAudit=true';vmArg '-Dunstableterrain.previewStage='+providers.gradleProperty('auditStages').getOrElse('PLAINS,REPEATING,FLOATING,GRAVEL,SPIKES,GRAVEL_AFTER_SPIKES,SPLIT,CHERRY,PLAINS_HILLS,SAND_DUNES,SAND_FARLANDS,CORRUPTED,ORBITALS,CHUNKS,DECAY,WATER,SKYGRID')}
+            if (providers.gradleProperty('revision127Verify').isPresent()) {vmArg '-Dunstableterrain.verifyRevision127=true';vmArg '-Dunstableterrain.skipEmpirePreview=true';vmArg '-Xmx6G';vmArg '-Xss16M'}
+            if (providers.gradleProperty('terrain126Verify').isPresent()) {
+                vmArg '-Dunstableterrain.verifyTerrain126=true'
+                vmArg '-Dunstableterrain.previewTerrain126=true'
+                vmArg '-Dunstableterrain.previewStage=SAND_DUNES,FLOATING'
+                vmArg '-Xmx5G'
+                vmArg '-Xss16M'
+            }
+            if (providers.gradleProperty('empireVerify').isPresent()) {
+                vmArg '-Dunstableterrain.verifyEmpire=true'
+                vmArg '-Dunstableterrain.previewEmpire=true'
+                vmArg '-Xmx5G'
+                vmArg '-Xss16M'
+            }
+            if (providers.gradleProperty('revisionVerify').isPresent()) {
+                vmArg '-Dunstableterrain.verifyRevision=true'
+                vmArg '-Xmx4G'
+                vmArg '-Xss16M'
+            }
+            if (providers.gradleProperty('orbitalsVerify').isPresent()) {
+                vmArg '-Dunstableterrain.verifyOrbitals=true'
+                vmArg '-Xmx4G'
+                vmArg '-Xss16M'
+            }
+            if (providers.gradleProperty('farlandsCommandVerify').isPresent()) {
+                vmArg '-Dunstableterrain.verifyFarlandsCommand=true'
+                vmArg '-Xmx3G'
+            }
+            if (providers.gradleProperty('farlandsVerify').isPresent()) {
+                vmArg '-Dunstableterrain.verifyFarlands=true'
+                vmArg '-Xmx3G'
+            }
+            if (providers.gradleProperty('farlandsPreview').isPresent()) {
+                vmArg '-Dunstableterrain.previewFarlands=true'
+                if(providers.gradleProperty('farlandsPreviewStage').isPresent())vmArg '-Dunstableterrain.previewStage='+providers.gradleProperty('farlandsPreviewStage').get()
+                vmArg '-Xss16M'
+            }
+            if (providers.gradleProperty('underworldVerify').isPresent()) {
+                vmArg '-Dgreatsea.verifyUnderworld=true'
+                vmArg '-Xmx2G'
+            }
+            if (providers.gradleProperty('seaCornerVerify').isPresent()) {
+                vmArg '-Dgreatsea.verifyCorners=true'
+                vmArg '-Xmx2G'
+            }
+            if (providers.gradleProperty('seaVerify').isPresent()) {
+                vmArg '-Dgreatsea.verify=true'
+                // The exhaustive startup preview queues thousands of chunk saves at once.
+                vmArg '-Xss16M'
+                vmArg '-Xmx3G'
+            }
+        }
+        client {
+            runDir (providers.gradleProperty('photo1437').isPresent()?'../../work/photo-client-1437':providers.gradleProperty('revision1430Capture').isPresent()?'../../work/test-client-1430':providers.gradleProperty('revision1410Capture').isPresent()?'../../work/test-client-1410':providers.gradleProperty('revision1400Capture').isPresent()?'../../work/test-client-1400':providers.gradleProperty('revision1390Final').isPresent()?'../../work/test-client-1390-final':providers.gradleProperty('revision1390Capture').isPresent()?'../../work/test-client-1390-candidate':providers.gradleProperty('revision1390Baseline').isPresent()?'../../work/test-client-1390-baseline':providers.gradleProperty('revision1384Capture').isPresent()?'../../work/test-client-1384':providers.gradleProperty('revision1382Final').isPresent()?'../../work/test-client-1382-final':providers.gradleProperty('revision1382Capture').isPresent()?'../../work/test-client-1382':providers.gradleProperty('revision1381Capture').isPresent()?'../../work/test-client-1381':providers.gradleProperty('sampleFinalCapture').isPresent()?'../../work/test-client-final1380':'../../work/test-client')
+            if(providers.gradleProperty('photo1437').isPresent()){vmArg '-Xmx4G';vmArg '-Xss16M'}
+            if(providers.gradleProperty('spokelandsClientCapture').isPresent()){
+                vmArg '-Dunstableterrain.captureSpokelandsClient=true';vmArg (providers.gradleProperty('photo1437').isPresent()?'-Xmx4G':'-Xmx3G')
+                if(providers.gradleProperty('spokelandsDaylightCapture').isPresent())vmArg '-Dunstableterrain.captureSpokelandsDaylight=true'
+                if(providers.gradleProperty('spokelandsFlowerCapture').isPresent())vmArg '-Dunstableterrain.captureSpokelandsFlowerOnly=true'
+                programArgs '--username','SpokeAudit','--quickPlayMultiplayer',(providers.gradleProperty('revision1430Capture').isPresent()?('127.0.0.1:'+providers.gradleProperty('revision1430Port').getOrElse('25583')):providers.gradleProperty('revision1410Capture').isPresent()?'127.0.0.1:25580':providers.gradleProperty('revision1400Capture').isPresent()?'127.0.0.1:25577':providers.gradleProperty('revision1390Final').isPresent()?'127.0.0.1:25576':providers.gradleProperty('revision1390Capture').isPresent()?'127.0.0.1:25575':providers.gradleProperty('revision1390Baseline').isPresent()?'127.0.0.1:25574':providers.gradleProperty('revision1384Capture').isPresent()?'127.0.0.1:25574':providers.gradleProperty('revision1382Final').isPresent()?'127.0.0.1:25573':providers.gradleProperty('revision1382Capture').isPresent()?'127.0.0.1:25572':providers.gradleProperty('revision1381Capture').isPresent()?'127.0.0.1:25571':providers.gradleProperty('sampleFinalCapture').isPresent()?'127.0.0.1:25570':'127.0.0.1:25569'),'--width','1920','--height','1080'
+            }
+        }
+    }
+}
+
+            if(providers.gradleProperty('spokelandsClientCapture').isPresent()){
+    tasks.matching{it.name=='downloadAssets'}.configureEach{enabled=false}
+    tasks.named('runClient').configure{
+        doFirst{
+            def launch=file('.gradle/loom-cache/launch.cfg')
+            def source=launch.getText('UTF-8')
+            source=source.replace('1.21.11-29','29').replace(rootProject.file('../../work/gradle-home-115/caches/fabric-loom/assets').canonicalPath,'C:\\Users\\BxltRust\\AppData\\Roaming\\ModrinthApp\\meta\\assets')
+            launch.setText(source,'UTF-8')
+        }
+    }
+}
+
+
+
