@@ -28,4 +28,4 @@ Install one edition per server or world. Terrain updates apply when new chunks g
 
 Unstable Terrain is a closed-source project. Keep this source repository private. Public project pages provide installation information, screenshots, and release downloads. The imported reference terrain, tree and structure assets and the generated Paper core are required for the complete 1.0 build and are supplied through the local project workspace. See [asset and publishing notes](ASSETS.md) and [Paper verification](docs/Paper-verification.md).
 
-Project author: **BxltRust**. Inspiration: the Unstable Universe creators and builders. Tree models in the local build include work by **Horace Creations**. This is a fan project unaffiliated with Unstable Events or Mojang. The UT icon uses a screenshot from the project's Floating Farlands gallery.
+Project author: **BxltRust/Wlfies**. Inspiration: the Unstable Universe creators and builders. Tree models in the local build include work by **Horace Creations**. This is a fan project unaffiliated with Unstable Events or Mojang. The UT icon uses a screenshot from the project's Floating Farlands gallery.
