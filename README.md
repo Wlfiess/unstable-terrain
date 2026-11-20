@@ -22,6 +22,14 @@ Unstable Terrain is an unofficial Minecraft Java Edition world-generation projec
 
 Install one edition per server or world. Terrain updates apply when new chunks generate. The local 1.0 release has separate standard and no-landmark JARs for each platform.
 
+### Fabric world type
+
+**For Fabric single-player, you must select the Unstable world type when creating your world.** Open **Singleplayer → Create New World → World**, then click **World Type** until it reads **Unstable**, as shown below. Then create the world.
+
+![Minecraft Create New World menu with World Type set to Unstable](docs/images/unstable-world-type.jpg)
+
+For a Fabric server, set `level-type=greatsea:unstable` in `server.properties` before generating the world.
+
 ## Using the Orbitals
 
 Use the standard edition with custom landmarks enabled in an Unstable world. The array has 100 stations with alternating Stab Shots and Nuke Shots.
@@ -49,6 +57,12 @@ The accelerated sky and Breeze firing run while the control platform is active a
 ## Operator commands
 
 `/farlands list`, `/spokelands list`, and `/greatsea list` show destinations. Use `/mist`, `/amplified`, and `/underworld` to reach those regions. `/unstableterrain settings` exposes mob spawning, Farlands fireworks, Farlands portals, and Underworld adventure mode. All Unstable Terrain commands require OP.
+
+## Support and future versions
+
+Support for more Minecraft versions and additional mod loaders is coming.
+
+If you have problems or find bugs, contact **wlfiess** on Discord. Include your Minecraft version, platform (Fabric or Paper), mod version, and the steps to reproduce the issue. Attach screenshots or a crash report when relevant.
 
 ## Availability and credits
 
