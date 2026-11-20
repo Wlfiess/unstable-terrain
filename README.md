@@ -26,7 +26,7 @@ Install one edition per server or world. Terrain updates apply when new chunks g
 
 **For Fabric single-player, you must select the Unstable world type when creating your world.** Open **Singleplayer → Create New World → World**, then click **World Type** until it reads **Unstable**, as shown below. Then create the world.
 
-![Minecraft Create New World menu with World Type set to Unstable](docs/images/unstable-world-type.jpg)
+![Minecraft Create New World menu with World Type set to Unstable](docs/images/unstable-world-type.png)
 
 For a Fabric server, set `level-type=greatsea:unstable` in `server.properties` before generating the world.
 
